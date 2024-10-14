@@ -7,7 +7,7 @@ screen = pygame.display.set_mode((800, 800))
 clock = pygame.time.Clock()
 FPS = 60
 
-p = Particle(400, 400, 100, 100, 0, -981, 10, 0.8)
+p = Particle(400, 400, 100, 100, 0, -981, 10, 0.8) # Instantiates particle object, arguments control size and start position/velocity
 box = Box(10, 790, 10, 790)
 
 mouseDown = None
@@ -17,6 +17,7 @@ def start():
     pygame.draw.rect(screen, "white", (box.left, box.top, (box.right - box.left), (box.bottom - box.top)), 2)
 
 def update(dt):
+    # Uses simple kinematic equation to determine change in velocity and position
     p.vx = p.vx + p.ax * dt
     p.vy = p.vy + -p.ay * dt
     p.px = p.px + p.vx * dt
@@ -24,6 +25,8 @@ def update(dt):
     handleBoxCollisions()
 
 def handleBoxCollisions():
+    # Checks box object bounds to see whether particle objects has exceeded them
+    # Inverts the objects direction and applies elasticity
     if p.px - p.radius <= box.left or p.px + p.radius >= box.right:
         p.vx = -p.vx * 0.9
     if p.py + p.radius >= box.bottom or p.py - p.radius <= box.top:
@@ -56,7 +59,7 @@ while running:
 
     screen.fill("black")
 
-    #Processing
+    #Main
     start()
     update(1 / FPS)
     pygame.draw.circle(screen, "white", (p.px, p.py), p.radius, 2)
